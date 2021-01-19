@@ -10,8 +10,8 @@
 */
 
 
-#include "occQt.h"
 #include <QApplication>
+#include "occQt.h"
 
 int main(int argc, char *argv[])
 {
