@@ -71,6 +71,7 @@ occQt::occQt(QWidget *parent)
     myOccView = new OccView(this);
 
     setCentralWidget(myOccView);
+    setWindowState(Qt::WindowMaximized);
 
     createActions();
     createMenus();
