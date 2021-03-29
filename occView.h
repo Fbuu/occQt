@@ -66,6 +66,9 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent * theEvent);
     virtual void wheelEvent(QWheelEvent * theEvent);
 
+    // Key events
+    virtual void keyPressEvent(QKeyEvent *event);
+
     // Button events.
     virtual void onLButtonDown(const int theFlags, const QPoint thePoint);
     virtual void onMButtonDown(const int theFlags, const QPoint thePoint);
@@ -116,6 +119,9 @@ private:
 
     //! rubber rectangle for the mouse selection.
     QRubberBand* myRectBand;
+
+    //! current pressed Key
+    int pressedKeyName;
 
 };
 

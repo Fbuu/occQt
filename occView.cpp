@@ -56,7 +56,8 @@ OccView::OccView(QWidget* parent )
     myYmax(0),    
     myCurrentMode(CurAction3d_DynamicRotation),
     myDegenerateModeIsOn(Standard_True),
-    myRectBand(NULL)
+    myRectBand(NULL),
+    pressedKeyName(-1)
 {
     // No Background
     setBackgroundRole( QPalette::NoRole );
@@ -116,6 +117,8 @@ void OccView::init()
     myView->TriedronDisplay(Aspect_TOTP_LEFT_LOWER, Quantity_NOC_GOLD, 0.08, V3d_ZBUFFER);
 
     myContext->SetDisplayMode(AIS_Shaded, Standard_True);
+
+    myView->StartRotation(0,0,0.4f);
 }
 
 const Handle(AIS_InteractiveContext)& OccView::getContext() const
@@ -206,11 +209,25 @@ void OccView::mouseReleaseEvent( QMouseEvent* theEvent )
 void OccView::mouseMoveEvent( QMouseEvent * theEvent )
 {
     onMouseMove(theEvent->buttons(), theEvent->pos());
+    myView->StartRotation(theEvent->pos().x(),theEvent->pos().y());
 }
 
 void OccView::wheelEvent( QWheelEvent * theEvent )
 {
     onMouseWheel(theEvent->buttons(), theEvent->delta(), theEvent->pos());
+}
+
+void OccView::keyPressEvent(QKeyEvent *event)
+{
+    pressedKeyName = event->key();
+    if(event->key() == Qt::Key_R)
+    {
+        std::cout << "You Pressed Key R\n";
+    }
+    else
+    {
+        std::cout << "You Pressed Other Key\n";
+    }
 }
 
 void OccView::onLButtonDown( const int /*theFlags*/, const QPoint thePoint )
@@ -350,7 +367,11 @@ void OccView::onMouseMove( const int theFlags, const QPoint thePoint )
             break;
         }
     }
-
+    if(pressedKeyName == Qt::Key_R)
+    {
+         myView->Rotation(thePoint.x(), thePoint.y());
+         pressedKeyName = -1;
+    }
 }
 
 void OccView::dragEvent( const int x, const int y )
